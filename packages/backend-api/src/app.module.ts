@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { OpenAiModule } from './core/open-ai/open-ai.module';
+import { OpenAiModule } from './core/open-ai/ollama.module';
 
 @Module({
   imports: [
