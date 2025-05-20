@@ -1,0 +1,60 @@
+{
+  "name": "nobel-ai",
+  "version": "1.0.8",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "start:backend": "pnpm --filter @nobel-ai/backend start:dev",
+    "build:backend": "pnpm --filter @nobel-ai/backend build",
+    "build:frontend": "pnpm --filter @nobel-ai/frontend build",
+    "build": "pnpm run --filter \"@nobel-ai/*\" build",
+    "lint": "pnpm run --filter \"@nobel-ai/*\" lint",
+    "migrate:dev": "pnpm --filter @nobel-ai/backend prisma:migrate:dev",
+    "generate:dev": "pnpm --filter @nobel-ai/backend prisma:generate",
+    "start:frontend": "pnpm --filter @nobel-ai/frontend dev",
+    "seed": "pnpm --filter @nobel-ai/backend prisma:seed",
+    "studio": "pnpm --filter @nobel-ai/backend prisma:studio",
+    "email:dev": "pnpm --filter @nobel-ai/backend email:dev",
+    "generate-types": "pnpm --filter @nobel-ai/frontend generate-types",
+    "prisma:generate": "pnpm --filter @nobel-ai/backend prisma:generate",
+    "prepare": "husky",
+    "release": "release-it",
+    "db:push": "pnpm --filter @nobel-ai/backend db:push"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "@commitlint/cli": "^19.5.0",
+    "@commitlint/config-conventional": "^19.5.0",
+    "@release-it/bumper": "github:release-it/bumper",
+    "@types/dinero.js": "^1.9.4",
+    "@types/inquirer": "9.0.7",
+    "@types/multer": "1.4.10",
+    "@types/supertest": "2.0.14",
+    "husky": "^8.0.3",
+    "lint-staged": "^14.0.1",
+    "release-it": "^17.10.0",
+    "release-it-pnpm": "^4.6.3"
+  },
+  "release-it": {
+    "plugins": {
+      "release-it-pnpm": {
+        "publishCommand": "git push origin --tags"
+      }
+    },
+    "git": {
+      "requireCleanWorkingDir": false,
+      "commitMessage": "chore: release v${version}",
+      "tagName": "v${version}"
+    },
+    "npm": {
+      "publish": false
+    },
+    "github": false
+  },
+  "resolutions": {
+    "openid-client": "5.7.0"
+  }
+}
