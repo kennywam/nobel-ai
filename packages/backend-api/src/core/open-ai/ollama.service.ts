@@ -1,9 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 
-// Define interfaces for Ollama API responses
+// Define the expected shape of a successful Ollama response
 interface OllamaResponse {
   response?: string;
+  error?: string;
+}
+
+// Define the expected shape of an error response
+interface OllamaErrorResponse {
   error?: string;
 }
 
@@ -13,7 +18,7 @@ export class OllamaService {
   private readonly model: string;
 
   constructor() {
-    this.ollamaUrl = 
+    this.ollamaUrl =
       process.env.OLLAMA_URL || 'http://localhost:11434/api/generate';
     this.model = process.env.OLLAMA_MODEL || 'llama3';
   }
@@ -43,40 +48,37 @@ Be brief, medically accurate, and user-friendly.
           prompt: fullPrompt,
           stream: false,
           options: {
-            temperature: 0.5, // optional: reduce hallucinations
+            temperature: 0.5,
           },
-        }
+        },
       );
 
-      // Check if we have a valid response
       if (response.data?.response) {
         return response.data.response.trim();
       }
 
-      // If no valid response, throw an error with any error message from Ollama
-      throw new Error(response.data?.error || 'No valid response from Ollama');
-    } catch (error) {
-      console.error('Error calling Ollama:', error);
+      const fallbackError =
+        response.data?.error ?? 'No valid response from Ollama.';
+      throw new Error(fallbackError);
+    } catch (err: unknown) {
+      console.error('Error calling Ollama:', err);
 
-      // Handle specific error cases
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        
+      if (axios.isAxiosError(err)) {
+        const axiosError = err as AxiosError<OllamaErrorResponse>;
+
         if (axiosError.code === 'ECONNREFUSED') {
           throw new Error(
-            'Could not connect to Ollama. Ensure it is running locally. Install from https://ollama.com.'
+            'Could not connect to Ollama. Ensure it is running locally. Visit https://ollama.com for setup.',
           );
         }
 
-        // Extract error message from response if available
-        const responseData = axiosError.response?.data as OllamaResponse | undefined;
-        const errorMessage = responseData?.error || axiosError.message;
-        throw new Error(`Ollama error: ${errorMessage}`);
+        const serverErrorMsg =
+          axiosError.response?.data?.error ?? axiosError.message;
+        throw new Error(`Ollama error: ${serverErrorMsg}`);
       }
 
-      // For any other type of error
       throw new Error(
-        'Failed to generate summary. Please try again later or check Ollama installation.'
+        'Unexpected error. Please try again or check your Ollama setup.',
       );
     }
   }

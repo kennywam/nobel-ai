@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { OpenAiService } from './open-ai.service';
+import { OpenAIService } from './open-ai.service';
 
 describe('OpenAiService', () => {
-  let service: OpenAiService;
+  let service: OpenAIService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [OpenAiService],
+      providers: [OpenAIService],
     }).compile();
 
-    service = module.get<OpenAiService>(OpenAiService);
+    service = module.get<OpenAIService>(OpenAIService);
   });
 
   it('should be defined', () => {
