@@ -6,4 +6,4 @@ import { OllamaService } from './ollama.service';
   controllers: [OllamaController],
   providers: [OllamaService],
 })
-export class OpenAiModule {}
+export class OllamaModule {}
