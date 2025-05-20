@@ -33,7 +33,7 @@ Be brief, medically accurate, and user-friendly.`,
     };
 
     const res = await this.openai.chat.completions.create({
-      model: 'gpt-4',
+      model: 'gpt-3.5-turbo',
       messages: [systemMessage, userMessage],
       temperature: 0.3,
     });
