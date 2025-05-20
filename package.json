@@ -25,6 +25,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {},
+  "workspaces": [
+    "packages/*"
+  ],
   "devDependencies": {
     "@commitlint/cli": "^19.5.0",
     "@commitlint/config-conventional": "^19.5.0",
